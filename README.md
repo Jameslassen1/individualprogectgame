@@ -5,3 +5,9 @@ My goal for this project is to create an adventure-type game that utilizes art a
 
 ## class diagram
 ![CDiagram](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/Classdiagram.drawio.png)
+
+## start screen
+![startscreen]()
+
+## Gameplay
+![playing]()
