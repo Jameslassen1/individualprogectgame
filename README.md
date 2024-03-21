@@ -7,7 +7,7 @@ My goal for this project is to create an adventure-type game that utilizes art a
 ![CDiagram](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/Classdiagram.drawio.png)
 
 ## start screen
-![startscreen]()
+![startscreen](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/New%20Piskel%20(2).png)
 
 ## Gameplay
 ![playing]()
