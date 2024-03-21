@@ -10,4 +10,4 @@ My goal for this project is to create an adventure-type game that utilizes art a
 ![startscreen](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/New%20Piskel%20(2).png)
 
 ## Gameplay
-![playing]()
+![playing](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/New%20Piskel.png)
