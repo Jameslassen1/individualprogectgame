@@ -1,26 +1,23 @@
 import pygame
-
-
-
-
-play = False
-
-
+import sys
 
 pygame.init()
-screen = pygame.display.set_mode((600, 600))
-clock = pygame.time.Clock()
-font = pygame.font.Font(None, 36)
-font2 = pygame.font.Font(None,20)
+X = 520
+Y = 520
+play = False
 
-# Main game loop
+screen = pygame.display.set_mode((X, Y))
+ 
+startscreenimage = pygame.image.load("images/startscreen.png").convert()
+gameplay = pygame.image.load("images/game.png").convert()
+
+
 while not play:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             play = True
 
-
-
+    screen.blit(startscreenimage, (0, 0))
     pygame.display.flip()
 
     # Check for mouse click to start the game
@@ -28,8 +25,14 @@ while not play:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             play = True
 
+# main game loop
+while play:
+    screen.blit(gameplay, (0, 0))
     pygame.display.flip()
-    clock.tick(60)
+    # if health == 0
+        # play = False
+    pygame.display.flip()
     pygame.display.update()
+    
 
 pygame.quit()
