@@ -8,46 +8,50 @@ Y = 520
 play = False
 
 screen = pygame.display.set_mode((X, Y))
- 
-startscreenimage = imageio.mimread("images/startscreen.gif").convert()
+# SS means start screen
+SSImage1 = pygame.image.load("images/startscreen1.png").convert()
+SSImage2 = pygame.image.load("images/startscreen2.png").convert()
+SSImage3 = pygame.image.load("images/startscreen3.png").convert()
+
 gameplay = pygame.image.load("images/game.png").convert()
 
 
-while not play:
-    clock = pygame.time.Clock()
-    frame_rate = 3
+images = [SSImage1, SSImage2, SSImage3]
 
-    frame_counter = 0
-    current_frame = 0
-    num_frames = len(startscreenimage)
+clock = pygame.time.Clock()
+frame_rate = 2  # 2 frames per second
+
+current_index = 0
+num_images = len(images)
+frame_duration = 1000 // frame_rate
+
+frame_timer = 0
+while not play:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            pygame.quit()
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             play = True
-    current_frame_image = pygame.image.frombuffer(startscreenimage[current_frame], (startscreenimage[current_frame].shape[1], gif_frame[current_frame].shape[0]), "RGB")
-    screen.blit(current_frame_image, (0,0))
+    
+    screen.blit(images[current_index], (0, 0))
     pygame.display.flip()
 
-    
-    frame_counter += 1
-    if frame_counter >= frame_rate:
-        frame_counter=0
-        current_frame = (current_frame + 1) % num_frames 
+    frame_timer += clock.get_time()
+
+    # Switch image if enough time has elapsed
+    if frame_timer >= frame_duration:
+        frame_timer = 0
+        current_index = (current_index + 1) % num_images
 
     clock.tick(frame_rate)
 
-    # Check for mouse click to start the game
-    for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            play = True
-
-# main game loop
 while play:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            play = False
+            
     screen.blit(gameplay, (0, 0))
     pygame.display.flip()
-    # if health == 0
-        # play = False
-    pygame.display.flip()
-    pygame.display.update()
-    
+    clock.tick(60)  
 
 pygame.quit()
