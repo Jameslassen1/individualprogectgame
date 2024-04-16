@@ -1,6 +1,6 @@
 import pygame
 import sys
-import imageio
+from player import Player
 
 pygame.init()
 X = 520
@@ -15,11 +15,13 @@ SSImage3 = pygame.image.load("images/startscreen3.png").convert()
 
 gameplay = pygame.image.load("images/game.png").convert()
 
+player = Player(X // 2, Y // 2)
+player_group = pygame.sprite.GroupSingle(player)
 
 images = [SSImage1, SSImage2, SSImage3]
 
 clock = pygame.time.Clock()
-frame_rate = 2  # 2 frames per second
+frame_rate = 4  # 4 frames per second
 
 current_index = 0
 num_images = len(images)
@@ -49,8 +51,12 @@ while play:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             play = False
-            
+
+    keys = pygame.key.get_pressed()
+    player_group.update(keys)
+
     screen.blit(gameplay, (0, 0))
+    player_group.draw(screen)
     pygame.display.flip()
     clock.tick(60)  
 
