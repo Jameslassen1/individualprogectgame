@@ -1,5 +1,4 @@
 import pygame
-import sys
 from player import Player
 
 pygame.init()
@@ -8,15 +7,13 @@ Y = 520
 play = False
 
 screen = pygame.display.set_mode((X, Y))
+
 # SS means start screen
 SSImage1 = pygame.image.load("images/startscreen1.png").convert()
 SSImage2 = pygame.image.load("images/startscreen2.png").convert()
 SSImage3 = pygame.image.load("images/startscreen3.png").convert()
 
 gameplay = pygame.image.load("images/game.png").convert()
-
-player = Player(X // 2, Y // 2)
-player_group = pygame.sprite.GroupSingle(player)
 
 images = [SSImage1, SSImage2, SSImage3]
 
@@ -47,17 +44,32 @@ while not play:
 
     clock.tick(frame_rate)
 
-while play:
+player = Player()
+
+running = True
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            play = False
+            running = False
 
     keys = pygame.key.get_pressed()
-    player_group.update(keys)
+    dx, dy = 0, 0
+    if keys[pygame.K_LEFT]:
+        dx = -5
+    elif keys[pygame.K_RIGHT]:
+        dx = 5
+    elif keys[pygame.K_UP]:
+        dy = -5
+    elif keys[pygame.K_DOWN]:
+        dy = 5
 
-    screen.blit(gameplay, (0, 0))
-    player_group.draw(screen)
-    pygame.display.flip()
-    clock.tick(60)  
+    player.update(dx, dy)
+
+    screen.fill((0, 0, 0))  # Fill the screen with black color
+    screen.blit(gameplay, (0, 0))  # Draw the gameplay screen
+    screen.blit(player.image, player.rect)  # Draw the player onto the screen
+    pygame.display.flip()  # Update the display
+
+    clock.tick(60)  # Cap the frame rate at 60 FPS
 
 pygame.quit()
