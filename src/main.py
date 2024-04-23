@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+from leval import Level
 
 pygame.init()
 X = 520
@@ -46,14 +47,36 @@ while not play:
 
 player = Player()
 
+# Define Level 1 with walls around three edges and an opening for progression
+level1 = Level("images/game.png", (50, 50), (750, 500))
+
+# Set player for Level 1
+level1.set_player(player)
+
+# Add walls to Level 1
+# Define the walls for Level 1 (e.g., around three edges)
+# Format for pygame.Rect: (x-coordinate, y-coordinate, width, height)
+level1.add_wall(pygame.Rect(0, 0, 520, 20))     # Top wall
+level1.add_wall(pygame.Rect(0, 0, 20, 520))     # Left wall
+level1.add_wall(pygame.Rect(0, 500, 520, 20))   # Bottom wall
+# Leave an opening for progression to the next level
+# Format for pygame.Rect: (x-coordinate, y-coordinate, width, height)
+level1.add_wall(pygame.Rect(500, 0, 20, 520))   # Opening for progression to the next level
+
+current_level = level1  # Start with Level 1
+
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
+
+
     keys = pygame.key.get_pressed()
     dx, dy = 0, 0
+
+    
     if keys[pygame.K_LEFT]:
         dx = -5
     elif keys[pygame.K_RIGHT]:
@@ -63,10 +86,29 @@ while running:
     elif keys[pygame.K_DOWN]:
         dy = 5
 
-    player.update(dx, dy)
+
+    # Check for collision with level exit and adjust player movement
+    collision, collision_direction = current_level.check_collision(player.rect, dx, dy)
+    if collision:
+        print("Collision detected. Collision direction:", collision_direction)
+        # If there's a collision, adjust player movement
+        if collision_direction == "right" and player_dx > 0:
+            dx = 0
+        elif collision_direction == "left" and player_dx < 0:
+            dx = 0
+        elif collision_direction == "down" and player_dy > 0:
+            dy = 0
+        elif collision_direction == "up" and player_dy < 0:
+            dy = 0
+
+        print("Adjusted dx, dy:", dx, dy)
+    player.update(dx,dy)
 
     screen.fill((0, 0, 0))  # Fill the screen with black color
     screen.blit(gameplay, (0, 0))  # Draw the gameplay screen
+
+
+    current_level.draw(screen)
     screen.blit(player.image, player.rect)  # Draw the player onto the screen
     pygame.display.flip()  # Update the display
 
