@@ -14,7 +14,6 @@ SSImage1 = pygame.image.load("images/startscreen1.png").convert()
 SSImage2 = pygame.image.load("images/startscreen2.png").convert()
 SSImage3 = pygame.image.load("images/startscreen3.png").convert()
 
-gameplay = pygame.image.load("images/game.png").convert()
 
 images = [SSImage1, SSImage2, SSImage3]
 
@@ -47,17 +46,23 @@ while not play:
 
 player = Player(50, 50)
 
-# Define Level 1 with walls around three edges and an opening for progression
-level1 = Level("images/game.png", (50, 50), (750, 500))
 
-# Set player for Level 1
+level1 = Level("images/leval1.png", (50, 50), (750, 500))
 level1.set_player(player)
+level1.add_wall(pygame.Rect(0, 0, 520, 20))     
+level1.add_wall(pygame.Rect(0, 0, 20, 520))    
+level1.add_wall(pygame.Rect(0, 500, 520, 20))
+level1.add_wall(pygame.Rect(100, 200, 50, 50))
+
+level2 = Level("images/leval2.png", (50, 50), (750, 500))
+level2.add_wall(pygame.Rect(0, 0, 520, 20))     
+level2.add_wall(pygame.Rect(0, 0, 20, 520))    
+level2.add_wall(pygame.Rect(0, 500, 520, 20))
+level2.add_wall(pygame.Rect(100, 200, 50, 50))
 
 
 # Format for pygame.Rect: (x-coordinate, y-coordinate, width, height)
-level1.add_wall(pygame.Rect(0, 0, 520, 20))     # Top wall
-level1.add_wall(pygame.Rect(0, 0, 20, 520))     # Left wall
-level1.add_wall(pygame.Rect(0, 500, 520, 20))   # Bottom wall next level
+
 
 current_level = level1  # Start with Level 1
 
@@ -71,36 +76,48 @@ while running:
     dx, dy = 0, 0
 
     if keys[pygame.K_LEFT]:
-        dx = -5
+        dx = -3
     elif keys[pygame.K_RIGHT]:
-        dx = 5
+        dx = 3
     elif keys[pygame.K_UP]:
-        dy = -5
+        dy = -3
     elif keys[pygame.K_DOWN]:
-        dy = 5
+        dy = 3
 
     # Collision detection
     collision, collision_direction = current_level.check_collision(player.rect, dx, dy)
     if collision:
         # If there's a collision, adjust player movement
         if collision_direction == "right" and dx > 0:
-            dx = 0
+            dx = -20
         elif collision_direction == "left" and dx < 0:
-            dx = 0
+            dx = +20
         elif collision_direction == "down" and dy > 0:
-            dy = 0
+            dy = -20
         elif collision_direction == "up" and dy < 0:
-            dy = 0
+            dy = +20
 
     player.update(dx,dy)
 
-    screen.fill((0, 0, 0))  # Fill the screen with black color
-    screen.blit(gameplay, (0, 0))  # Draw the gameplay screen
+    # Check if player reached the edge of the screen
+    if player.rect.left < 0 or player.rect.right > X or player.rect.top < 0 or player.rect.bottom > Y:
+        # Move to the next level
+        if current_level == level1:
+            current_level = level2
+        else:
+            # Here you can add more levels or any other action you want
+            pass
+        player.rect.topleft = current_level.entry_point
+
+    screen.fill((0, 0, 0))  
+    
+    for wall in current_level.walls:
+        pygame.draw.rect(screen, (255, 255, 255), wall)
 
     current_level.draw(screen)
-    screen.blit(player.image, player.rect)  # Draw the player onto the screen
-    pygame.display.flip()  # Update the display
+    screen.blit(player.image, player.rect)  
+    pygame.display.flip()  
 
-    clock.tick(60)  # Cap the frame rate at 60 FPS
+    clock.tick(60)  
 
 pygame.quit()

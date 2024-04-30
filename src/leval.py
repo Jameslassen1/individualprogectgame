@@ -17,8 +17,7 @@ class Level:
 
     def draw(self, screen):
         screen.blit(self.background_image, (0, 0))
-        for wall in self.walls:
-            pygame.draw.rect(screen, (0, 0, 0, 0), wall)  # Draw with transparent color
+        # Do not draw walls on the screen
 
     def check_collision(self, rect, dx, dy):
         collision_direction = None
