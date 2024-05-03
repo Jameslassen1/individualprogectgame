@@ -1,6 +1,7 @@
 import pygame
 from player import Player
-from leval import Level  # Import the Level class
+from leval import Level
+from eneimy import Enemy
 
 pygame.init()
 X = 520
@@ -44,25 +45,32 @@ while not play:
 
     clock.tick(frame_rate)
 
-player = Player(50, 50)
-
+player = Player(50, 50, 3, X, Y)  # Player position (50, 50), speed 3
 
 level1 = Level("images/leval1.png", (50, 50), (750, 500))
 level1.set_player(player)
-level1.add_wall(pygame.Rect(0, 0, 520, 20))     
-level1.add_wall(pygame.Rect(0, 0, 20, 520))    
-level1.add_wall(pygame.Rect(0, 500, 520, 20))
-level1.add_wall(pygame.Rect(100, 200, 50, 50))
+level1.add_wall(pygame.Rect(0, 0, 520, 20))  #left   
+level1.add_wall(pygame.Rect(0, 0, 20, 520))  #top  
+level1.add_wall(pygame.Rect(0, 500, 520, 20))#bottom
+level1.add_wall(pygame.Rect(500, 0, 20, 100))#top exit
+level1.add_wall(pygame.Rect(500, 270, 20, 100))#bottom exit
+
+enemy_speed = 2
+enemy_direction = pygame.Vector2(1, 0)  # Moving right
+enemy = Enemy(x_position, y_position, enemy_speed, enemy_direction, X, Y, radius)
+current_level.add_enemy(enemy)
 
 level2 = Level("images/leval2.png", (50, 50), (750, 500))
-level2.add_wall(pygame.Rect(0, 0, 520, 20))     
-level2.add_wall(pygame.Rect(0, 0, 20, 520))    
-level2.add_wall(pygame.Rect(0, 500, 520, 20))
-level2.add_wall(pygame.Rect(100, 200, 50, 50))
+level2.add_wall(pygame.Rect(0, 0, 520, 20)) #top    
+level2.add_wall(pygame.Rect(0, 0, 20, 520))  #left  
+level2.add_wall(pygame.Rect(0, 450, 300, 80))#bottom left
+level2.add_wall(pygame.Rect(480, 100, 100, 520)) #right
 
-
-# Format for pygame.Rect: (x-coordinate, y-coordinate, width, height)
-
+# Create enemies for level 2
+enemy1_level2 = Enemy(300, 300, 2, X, Y, 10)
+enemy2_level2 = Enemy(400, 400, 2, X, Y, 10)
+level2.add_enemy(enemy1_level2)
+level2.add_enemy(enemy2_level2)
 
 current_level = level1  # Start with Level 1
 
@@ -76,13 +84,13 @@ while running:
     dx, dy = 0, 0
 
     if keys[pygame.K_LEFT]:
-        dx = -3
+        dx = -10
     elif keys[pygame.K_RIGHT]:
-        dx = 3
+        dx = 10
     elif keys[pygame.K_UP]:
-        dy = -3
+        dy = -10
     elif keys[pygame.K_DOWN]:
-        dy = 3
+        dy = 10
 
     # Collision detection
     collision, collision_direction = current_level.check_collision(player.rect, dx, dy)
@@ -113,6 +121,10 @@ while running:
     
     for wall in current_level.walls:
         pygame.draw.rect(screen, (255, 255, 255), wall)
+
+    for enemy in current_level.enemies:
+        enemy.update(current_level.walls, player, dt)  # Update enemy position
+        enemy.draw(screen)
 
     current_level.draw(screen)
     screen.blit(player.image, player.rect)  

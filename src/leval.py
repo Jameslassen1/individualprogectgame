@@ -7,6 +7,7 @@ class Level:
         self.exit_point = exit_point
         self.player = None
         self.walls = []
+        self.enemies = []
 
     def set_player(self, player):
         self.player = player
@@ -15,9 +16,15 @@ class Level:
     def add_wall(self, rect):
         self.walls.append(rect)
 
+    def add_enemy(self, enemy):
+        self.enemies.append(enemy)
+
+    def remove_enemy(self, enemy):
+        self.enemies.remove(enemy)
+
     def draw(self, screen):
         screen.blit(self.background_image, (0, 0))
-        # Do not draw walls on the screen
+        # Do not draw walls or enemies on the screen
 
     def check_collision(self, rect, dx, dy):
         collision_direction = None
