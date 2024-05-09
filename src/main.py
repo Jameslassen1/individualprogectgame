@@ -1,7 +1,7 @@
 import pygame
 from player import Player
-from leval import Level
-from eneimy import Enemy
+from level import Level
+from enemy import Enemy
 
 pygame.init()
 X = 520
@@ -14,7 +14,6 @@ screen = pygame.display.set_mode((X, Y))
 SSImage1 = pygame.image.load("images/startscreen1.png").convert()
 SSImage2 = pygame.image.load("images/startscreen2.png").convert()
 SSImage3 = pygame.image.load("images/startscreen3.png").convert()
-
 
 images = [SSImage1, SSImage2, SSImage3]
 
@@ -47,24 +46,23 @@ while not play:
 
 player = Player(50, 50, 3, X, Y)  # Player position (50, 50), speed 3
 
-level1 = Level("images/leval1.png", (50, 50), (750, 500))
+level1 = Level("images/level1.png", (50, 50), (750, 500))
 level1.set_player(player)
-level1.add_wall(pygame.Rect(0, 0, 520, 20))  #left   
-level1.add_wall(pygame.Rect(0, 0, 20, 520))  #top  
-level1.add_wall(pygame.Rect(0, 500, 520, 20))#bottom
-level1.add_wall(pygame.Rect(500, 0, 20, 100))#top exit
-level1.add_wall(pygame.Rect(500, 270, 20, 100))#bottom exit
+level1.add_wall(pygame.Rect(0, 0, 520, 20))  # left
+level1.add_wall(pygame.Rect(0, 0, 20, 520))  # top
+level1.add_wall(pygame.Rect(0, 500, 520, 20))  # bottom
+level1.add_wall(pygame.Rect(500, 0, 20, 520))  # right
 
 enemy_speed = 2
 enemy_direction = pygame.Vector2(1, 0)  # Moving right
-enemy = Enemy(100, 100, enemy_speed, enemy_direction, 54, 23, 60)
-current_level.add_enemy(enemy)
+enemy = Enemy(100, 100, enemy_speed, X, Y, 60)
+level1.add_enemy(enemy)
 
-level2 = Level("images/leval2.png", (50, 50), (750, 500))
-level2.add_wall(pygame.Rect(0, 0, 520, 20)) #top    
-level2.add_wall(pygame.Rect(0, 0, 20, 520))  #left  
-level2.add_wall(pygame.Rect(0, 450, 300, 80))#bottom left
-level2.add_wall(pygame.Rect(480, 100, 100, 520)) #right
+level2 = Level("images/level2.png", (50, 50), (750, 500))
+level2.add_wall(pygame.Rect(0, 0, 520, 20))  # top
+level2.add_wall(pygame.Rect(0, 0, 20, 520))  # left
+level2.add_wall(pygame.Rect(0, 450, 300, 80))  # bottom left
+level2.add_wall(pygame.Rect(480, 100, 100, 520))  # right
 
 # Create enemies for level 2
 enemy1_level2 = Enemy(300, 300, 2, X, Y, 10)
@@ -76,6 +74,8 @@ current_level = level1  # Start with Level 1
 
 running = True
 while running:
+    dt = clock.tick(60) / 1000  # Delta time in seconds
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -99,13 +99,13 @@ while running:
         if collision_direction == "right" and dx > 0:
             dx = -20
         elif collision_direction == "left" and dx < 0:
-            dx = +20
+            dx = 20
         elif collision_direction == "down" and dy > 0:
             dy = -20
         elif collision_direction == "up" and dy < 0:
-            dy = +20
+            dy = 20
 
-    player.update(dx,dy)
+    player.update(dx, dy)
 
     # Check if player reached the edge of the screen
     if player.rect.left < 0 or player.rect.right > X or player.rect.top < 0 or player.rect.bottom > Y:
@@ -117,19 +117,17 @@ while running:
             pass
         player.rect.topleft = current_level.entry_point
 
-    screen.fill((0, 0, 0))  
-    
+    screen.fill((0, 0, 0))
+
     for wall in current_level.walls:
         pygame.draw.rect(screen, (255, 255, 255), wall)
 
     for enemy in current_level.enemies:
-        enemy.update(current_level.walls, player, dt)  # Update enemy position
+        enemy.update(current_level.walls, player)  # Update enemy position
         enemy.draw(screen)
 
     current_level.draw(screen)
-    screen.blit(player.image, player.rect)  
-    pygame.display.flip()  
-
-    clock.tick(60)  
+    screen.blit(player.image, player.rect)
+    pygame.display.flip()
 
 pygame.quit()
