@@ -51,24 +51,24 @@ level1.set_player(player)
 level1.add_wall(pygame.Rect(0, 0, 520, 20))  # left
 level1.add_wall(pygame.Rect(0, 0, 20, 520))  # top
 level1.add_wall(pygame.Rect(0, 500, 520, 20))  # bottom
-level1.add_wall(pygame.Rect(500, 0, 20, 520))  # right
+level1.add_wall(pygame.Rect(500, 0, 20, 100))  # topright
+level1.add_wall(pygame.Rect(500, 320, 20, 520))  # bottomright
 
-enemy_speed = 2
-enemy_direction = pygame.Vector2(1, 0)  # Moving right
-enemy = Enemy(100, 100, enemy_speed, X, Y, 60)
-level1.add_enemy(enemy)
+#enemy_speed = 2
+#enemy_direction = pygame.Vector2(1, 0)  # Moving right
+#enemy = Enemy(100, 100, enemy_speed, enemy_direction, X, Y)
+#level1.add_enemy(enemy)
 
 level2 = Level("images/level2.png", (50, 50), (750, 500))
 level2.add_wall(pygame.Rect(0, 0, 520, 20))  # top
 level2.add_wall(pygame.Rect(0, 0, 20, 520))  # left
 level2.add_wall(pygame.Rect(0, 450, 300, 80))  # bottom left
-level2.add_wall(pygame.Rect(480, 100, 100, 520))  # right
+level2.add_wall(pygame.Rect(480, 100, 100, 100))  # topright
 
-# Create enemies for level 2
-enemy1_level2 = Enemy(300, 300, 2, X, Y, 10)
-enemy2_level2 = Enemy(400, 400, 2, X, Y, 10)
-level2.add_enemy(enemy1_level2)
-level2.add_enemy(enemy2_level2)
+#enemy1_level2 = Enemy(300, 300, 2, X, Y)
+#enemy2_level2 = Enemy(400, 400, 2, X, Y)
+#level2.add_enemy(enemy1_level2)
+#level2.add_enemy(enemy2_level2)
 
 current_level = level1  # Start with Level 1
 
@@ -84,13 +84,13 @@ while running:
     dx, dy = 0, 0
 
     if keys[pygame.K_LEFT]:
-        dx = -10
+        dx = -3
     elif keys[pygame.K_RIGHT]:
-        dx = 10
+        dx = 3
     elif keys[pygame.K_UP]:
-        dy = -10
+        dy = -3
     elif keys[pygame.K_DOWN]:
-        dy = 10
+        dy = 3
 
     # Collision detection
     collision, collision_direction = current_level.check_collision(player.rect, dx, dy)
@@ -122,12 +122,13 @@ while running:
     for wall in current_level.walls:
         pygame.draw.rect(screen, (255, 255, 255), wall)
 
-    for enemy in current_level.enemies:
-        enemy.update(current_level.walls, player)  # Update enemy position
-        enemy.draw(screen)
-
+    #for enemy in current_level.enemies:
+        #enemy.draw(screen)
+    
     current_level.draw(screen)
     screen.blit(player.image, player.rect)
     pygame.display.flip()
+    print("Player Position:", player.rect.x, player.rect.y)
+    print("Screen Dimensions:", X, Y)
 
 pygame.quit()
