@@ -57,7 +57,7 @@ level1.add_wall(pygame.Rect(500, 270, 20, 100))#bottom exit
 
 enemy_speed = 2
 enemy_direction = pygame.Vector2(1, 0)  # Moving right
-enemy = Enemy(x_position, y_position, enemy_speed, enemy_direction, X, Y, radius)
+enemy = Enemy(100, 100, enemy_speed, enemy_direction, 54, 23, 60)
 current_level.add_enemy(enemy)
 
 level2 = Level("images/leval2.png", (50, 50), (750, 500))
