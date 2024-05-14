@@ -7,7 +7,7 @@ class Level:
         self.exit_point = exit_point
         self.player = None
         self.walls = []
-        self.enemies = []
+        self.enemies = pygame.sprite.Group()  # Create a sprite group for enemies
 
     def set_player(self, player):
         self.player = player
@@ -17,14 +17,26 @@ class Level:
         self.walls.append(rect)
 
     def add_enemy(self, enemy):
-        self.enemies.append(enemy)
+        self.enemies.add(enemy)  # Add enemy to the sprite group
 
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)
 
     def draw(self, screen):
         screen.blit(self.background_image, (0, 0))
-        # Do not draw walls or enemies on the screen
+
+        # Draw walls
+        for wall in self.walls:
+            pygame.draw.rect(screen, (255, 255, 255), wall)
+
+        # Draw enemies
+        self.enemies.draw(screen)
+
+        # Draw player
+        screen.blit(self.player.image, self.player.rect)
+
+    def update_enemies(self):
+        self.enemies.update()
 
     def check_collision(self, rect, dx, dy):
         collision_direction = None

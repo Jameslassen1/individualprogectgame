@@ -3,6 +3,7 @@ from player import Player
 from level import Level
 from enemy import Enemy
 
+
 pygame.init()
 X = 520
 Y = 520
@@ -54,10 +55,10 @@ level1.add_wall(pygame.Rect(0, 500, 520, 20))  # bottom
 level1.add_wall(pygame.Rect(500, 0, 20, 100))  # topright
 level1.add_wall(pygame.Rect(500, 320, 20, 520))  # bottomright
 
-#enemy_speed = 2
-#enemy_direction = pygame.Vector2(1, 0)  # Moving right
-#enemy = Enemy(100, 100, enemy_speed, enemy_direction, X, Y)
-#level1.add_enemy(enemy)
+enemy_speed = 2
+enemy_direction = pygame.Vector2(1, 0)  # Moving right
+enemy = Enemy(100, 100, enemy_speed, enemy_direction, X, Y)
+level1.add_enemy(enemy)
 
 level2 = Level("images/level2.png", (50, 50), (750, 500))
 level2.add_wall(pygame.Rect(0, 0, 520, 20))  # top
@@ -127,8 +128,15 @@ while running:
     
     current_level.draw(screen)
     screen.blit(player.image, player.rect)
+    current_level.update_enemies()  # Update enemy position
+    current_level.draw(screen)
+    # Display player health above their head
+    font = pygame.font.Font(None, 24)
+    text_surface = font.render("Health: " + str(player.health), True, (255, 255, 255))
+    text_rect = text_surface.get_rect(center=(player.rect.centerx, player.rect.top - 10))
+    screen.blit(text_surface, text_rect)
+
     pygame.display.flip()
-    print("Player Position:", player.rect.x, player.rect.y)
-    print("Screen Dimensions:", X, Y)
 
 pygame.quit()
+
