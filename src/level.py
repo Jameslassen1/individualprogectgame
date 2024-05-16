@@ -27,7 +27,7 @@ class Level:
 
         # Draw walls
         for wall in self.walls:
-            pygame.draw.rect(screen, (255, 255, 255), wall)
+            pygame.draw.rect(screen, (0,0,0,0), wall)
 
         # Draw enemies
         self.enemies.draw(screen)

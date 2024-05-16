@@ -113,23 +113,20 @@ while running:
         # Move to the next level
         if current_level == level1:
             current_level = level2
+            player.rect.topleft = current_level.entry_point
         else:
             # Here you can add more levels or any other action you want
             pass
-        player.rect.topleft = current_level.entry_point
 
-    screen.fill((0, 0, 0))
 
+    screen.fill((0, 0, 0))  # Clear the screen
     for wall in current_level.walls:
-        pygame.draw.rect(screen, (255, 255, 255), wall)
+        pygame.draw.rect(screen, (255, 255, 255), wall)  # Draw walls
 
-    #for enemy in current_level.enemies:
-        #enemy.draw(screen)
-    
-    current_level.draw(screen)
-    screen.blit(player.image, player.rect)
-    current_level.update_enemies()  # Update enemy position
-    current_level.draw(screen)
+    current_level.update_enemies()  # Update enemy positions
+    current_level.draw(screen)  # Draw the level, including enemies
+    screen.blit(player.image, player.rect)  # Draw the player
+
     # Display player health above their head
     font = pygame.font.Font(None, 24)
     text_surface = font.render("Health: " + str(player.health), True, (255, 255, 255))
