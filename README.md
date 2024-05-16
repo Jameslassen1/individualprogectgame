@@ -9,8 +9,10 @@ Some of the bigest struggles that I had was creating an animated start screen. a
 ## class diagram
 ![CDiagram](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/Classdiagram.drawio.png)
 
-## start screen
-![startscreen](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/New%20Piskel%20(2).png)
+## frames of start screen
+![startscreen1](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/startscreen1.png)
+![startscreen2](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/startscreen2.png)
+![startscreen3](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/startscreen3.png)
 
 ## Gameplay
 ![playing](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/gamepla1.png)
