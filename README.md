@@ -13,4 +13,10 @@ Some of the bigest struggles that I had was creating an animated start screen. a
 ![startscreen](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/New%20Piskel%20(2).png)
 
 ## Gameplay
-![playing](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/New%20Piskel.png)
+![playing](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/gamepla1.png)
+
+
+## sprites
+![playing](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/player.png)
+![playing](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/enemy.png)
+![playing](https://github.com/Jameslassen1/individualprogectgame/blob/main/images/shop.png)
